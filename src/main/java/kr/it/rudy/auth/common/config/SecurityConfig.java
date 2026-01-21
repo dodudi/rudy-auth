@@ -112,7 +112,12 @@ public class SecurityConfig {
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
-
+        config.setAllowedOrigins(List.of(
+                "http://localhost:5173",
+                "https://rudy.it.kr",
+                "https://api.rudy.it.kr",
+                "https://auth.rudy.it.kr"
+        ));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
