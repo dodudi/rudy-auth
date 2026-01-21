@@ -112,8 +112,15 @@ public class SecurityConfig {
                 "http://api.rudy.it.kr",
                 "https://api.rudy.it.kr",
                 "http://auth.rudy.it.kr",
-                "https://auth.rudy.it.kr"
+                "https://auth.rudy.it.kr",
+                "http://localhost:5173"
         ));
+        config.setAllowedOrigins(List.of(
+                "http://localhost:5173",
+                "https://rudy.it.kr",
+                "https://api.rudy.it.kr"
+        ));
+
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
