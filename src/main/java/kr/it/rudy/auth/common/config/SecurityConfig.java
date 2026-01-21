@@ -140,6 +140,7 @@ public class SecurityConfig {
                     .redirectUri("https://rudy.it.kr/callback")
                     .redirectUri("https://auth.rudy.it.kr/callback")
                     .redirectUri("https://api.rudy.it.kr/callback")
+                    .redirectUri("http://localhost:5173/callback")
 //                    .redirectUri("http://localhost:5173/callback")
 //                    .redirectUri("http://127.0.0.1:5500/callback.html")
 //                    .redirectUri("http://localhost:8083/test-login.html")
