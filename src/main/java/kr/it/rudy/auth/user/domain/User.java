@@ -2,34 +2,41 @@ package kr.it.rudy.auth.user.domain;
 
 import lombok.Getter;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Getter
-public class User {
+public class User implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private final Long id;
     private final String username;
     private final String password;
     private final String nickname;
+    private final UserRole userRole;
     private final Instant createdDt;
     private final Instant updatedDt;
 
-    public User(Long id, String username, String password, String nickname, Instant createdDt, Instant updatedDt) {
+    public User(Long id, String username, String password, String nickname, UserRole userRole, Instant createdDt, Instant updatedDt) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.nickname = validateNickname(nickname);
+        this.userRole = userRole;
         this.createdDt = createdDt;
         this.updatedDt = updatedDt;
     }
 
-    public static User create(String username, String password, String nickname) {
+    public static User create(String username, String password, String nickname, UserRole userRole) {
         return new User(
                 null,
                 username,
                 password,
                 nickname,
+                userRole,
                 null,
                 null
         );

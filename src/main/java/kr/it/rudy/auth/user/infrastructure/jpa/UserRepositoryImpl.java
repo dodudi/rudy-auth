@@ -23,4 +23,11 @@ public class UserRepositoryImpl implements UserRepository {
                 .map(UserEntity::toDomain)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
     }
+
+    @Override
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .map(UserEntity::toDomain)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+    }
 }

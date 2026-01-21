@@ -5,6 +5,7 @@ import kr.it.rudy.auth.user.application.dto.UserResponse;
 import kr.it.rudy.auth.user.domain.User;
 import kr.it.rudy.auth.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,10 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public UserResponse createUser(UserRequest request) {
-        User user = User.create(request.username(), request.password(), request.nickname());
+        User user = User.create(request.username(), passwordEncoder.encode(request.password()), request.nickname(), request.userRole());
         User save = userRepository.save(user);
         return new UserResponse(save.getId(), save.getUsername(), save.getNickname());
     }

@@ -26,18 +26,22 @@ public class UserEntity extends BaseEntity {
     @Column(name = "nickname", nullable = false)
     private String nickname;
 
-    public UserEntity(Long id, String username, String password, String nickname) {
+    @Column(name = "role", nullable = false)
+    private UserRole userRole;
+
+    public UserEntity(Long id, String username, String password, String nickname, UserRole userRole) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.nickname = nickname;
+        this.userRole = userRole;
     }
 
     public static UserEntity from(User user) {
-        return new UserEntity(user.getId(), user.getUsername(), user.getPassword(), user.getNickname());
+        return new UserEntity(user.getId(), user.getUsername(), user.getPassword(), user.getNickname(), user.getUserRole());
     }
 
     public User toDomain() {
-        return new User(id, username, password, nickname, getCreatedDt(), getUpdatedDt());
+        return new User(id, username, password, nickname, userRole, getCreatedDt(), getUpdatedDt());
     }
 }
