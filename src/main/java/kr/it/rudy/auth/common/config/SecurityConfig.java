@@ -91,7 +91,6 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/users").permitAll()  // 회원가입
                         .requestMatchers("/.well-known/**").permitAll()
-                        .requestMatchers("/test-login.html").permitAll()  // 테스트 페이지
                         .anyRequest().authenticated()
                 )
                 .formLogin(AbstractHttpConfigurer::disable);  // 서버 렌더링 로그인 페이지 비활성화
@@ -107,17 +106,17 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOriginPatterns(List.of(
                 "http://localhost:*",
-                "http://127.0.0.1:*"
+                "http://127.0.0.1:*",
+                "http://rudy.it.kr",
+                "https://rudy.it.kr",
+                "http://api.rudy.it.kr",
+                "https://api.rudy.it.kr",
+                "http://auth.rudy.it.kr",
+                "https://auth.rudy.it.kr"
         ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(List.of(
-                "http://localhost:5173",
-                "https://rudy.it.kr",
-                "https://api.rudy.it.kr",
-                "https://auth.rudy.it.kr"
-        ));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
@@ -139,6 +138,8 @@ public class SecurityConfig {
                     .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
 //                    .redirectUri("http://localhost:3000/callback")
                     .redirectUri("https://rudy.it.kr/callback")
+                    .redirectUri("https://auth.rudy.it.kr/callback")
+                    .redirectUri("https://api.rudy.it.kr/callback")
 //                    .redirectUri("http://localhost:5173/callback")
 //                    .redirectUri("http://127.0.0.1:5500/callback.html")
 //                    .redirectUri("http://localhost:8083/test-login.html")
