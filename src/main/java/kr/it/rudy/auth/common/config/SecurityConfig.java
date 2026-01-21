@@ -107,7 +107,8 @@ public class SecurityConfig {
         config.setAllowedOrigins(List.of(
                 "http://localhost:5173",
                 "https://rudy.it.kr",
-                "https://api.rudy.it.kr"
+                "https://api.rudy.it.kr",
+                "http://localhost:63342"
         ));
 
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
@@ -125,39 +126,34 @@ public class SecurityConfig {
     public RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder, JdbcOperations jdbcOperations) {
         JdbcRegisteredClientRepository clientRepository = new JdbcRegisteredClientRepository(jdbcOperations);
 
-        if (clientRepository.findByClientId("rudy-react") == null) {
-            RegisteredClient reactClient = RegisteredClient.withId(UUID.randomUUID().toString())
-                    .clientId("rudy-react")
-                    .clientSecret(passwordEncoder.encode("react-secret"))
-                    .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
-                    .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                    .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-//                    .redirectUri("http://localhost:3000/callback")
-                    .redirectUri("https://rudy.it.kr/callback")
-                    .redirectUri("https://auth.rudy.it.kr/callback")
-                    .redirectUri("https://api.rudy.it.kr/callback")
-                    .redirectUri("http://localhost:5173/callback")
-//                    .redirectUri("http://localhost:5173/callback")
-//                    .redirectUri("http://127.0.0.1:5500/callback.html")
-//                    .redirectUri("http://localhost:8083/test-login.html")
-//                    .redirectUri("http://localhost:63342/rudy-auth/src/main/resources/static/test-login.html")
-//                    .redirectUri("http://localhost:63342/rudy-auth/rudy-auth.main/static/test-login.html")  // IntelliJ Gradle
-                    .scope(OidcScopes.OPENID)
-                    .scope(OidcScopes.PROFILE)
-                    .scope("read")
-                    .scope("write")
-                    .tokenSettings(TokenSettings.builder()
-                            .accessTokenTimeToLive(Duration.ofMinutes(30))
-                            .refreshTokenTimeToLive(Duration.ofDays(7))
-                            .build())
-                    .clientSettings(ClientSettings.builder()
-                            .requireAuthorizationConsent(false)
-                            .requireProofKey(true)
-                            .build())
-                    .build();
+        RegisteredClient existing = clientRepository.findByClientId("rudy-react");
+        String clientDbId = existing != null ? existing.getId() : UUID.randomUUID().toString();
 
-            clientRepository.save(reactClient);
-        }
+        RegisteredClient reactClient = RegisteredClient.withId(clientDbId)
+                .clientId("rudy-react")
+                .clientSecret(passwordEncoder.encode("react-secret"))
+                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
+                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+                .redirectUri("https://rudy.it.kr/callback")
+                .redirectUri("https://auth.rudy.it.kr/callback")
+                .redirectUri("https://api.rudy.it.kr/callback")
+                .redirectUri("http://localhost:5173/callback")
+                .scope(OidcScopes.OPENID)
+                .scope(OidcScopes.PROFILE)
+                .scope("read")
+                .scope("write")
+                .tokenSettings(TokenSettings.builder()
+                        .accessTokenTimeToLive(Duration.ofMinutes(30))
+                        .refreshTokenTimeToLive(Duration.ofDays(7))
+                        .build())
+                .clientSettings(ClientSettings.builder()
+                        .requireAuthorizationConsent(false)
+                        .requireProofKey(true)
+                        .build())
+                .build();
+
+        clientRepository.save(reactClient);
 
         return clientRepository;
     }

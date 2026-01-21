@@ -28,10 +28,8 @@ spring:
           min-idle: 0
           max-wait: -1ms
 
-#server:
-#  servlet:
-#    session:
-#      cookie:
-#        domain: .rudy.it.kr
-#        same-site: none
-#        secure: true
+session:
+  cookie:
+    domain: .rudy.it.kr
+    same-site: None
+    secure: true
