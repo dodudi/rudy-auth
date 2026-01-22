@@ -73,7 +73,8 @@ public class SecurityConfig {
                                 new MediaTypeRequestMatcher(MediaType.APPLICATION_JSON)
                         )
                 )
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()));
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(AbstractHttpConfigurer::disable);
 
         return http.build();
     }
@@ -107,6 +108,8 @@ public class SecurityConfig {
         config.setAllowedOrigins(List.of(
                 "http://localhost:5173",
                 "https://rudy.it.kr",
+                "http://rudy.it.kr:5173",
+                "https://auth.rudy.it.kr",
                 "https://api.rudy.it.kr",
                 "http://localhost:63342"
         ));
