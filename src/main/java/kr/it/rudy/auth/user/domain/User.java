@@ -50,8 +50,8 @@ public class User implements Serializable {
     }
 
     private static String generateRandomNickname() {
-        String[] adjectives = {"행복한", "즐거운", "용감한", "지혜로운", "빛나는", "신비로운", "멋진", "귀여운"};
-        String[] nouns = {"고양이", "강아지", "토끼", "여우", "곰돌이", "펭귄", "다람쥐", "부엉이"};
+        String[] adjectives = {"Happy", "Joyful", "Brave", "Wise", "Shining", "Mysterious", "Cool", "Cute"};
+        String[] nouns = {"Cat", "Dog", "Rabbit", "Fox", "Bear", "Penguin", "Squirrel", "Owl"};
 
         String adjective = adjectives[ThreadLocalRandom.current().nextInt(adjectives.length)];
         String noun = nouns[ThreadLocalRandom.current().nextInt(nouns.length)];
