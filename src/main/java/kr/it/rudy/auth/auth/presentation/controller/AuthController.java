@@ -3,7 +3,9 @@ package kr.it.rudy.auth.auth.presentation.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
+import kr.it.rudy.auth.auth.application.dto.LoginRequest;
+import kr.it.rudy.auth.auth.application.dto.LoginResponse;
+import kr.it.rudy.auth.auth.application.dto.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -62,24 +64,11 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<UserInfo> me() {
+    public ResponseEntity<UserResponse> me() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !auth.isAuthenticated() || "anonymousUser".equals(auth.getPrincipal())) {
             return ResponseEntity.status(401).build();
         }
-        return ResponseEntity.ok(new UserInfo(auth.getName()));
+        return ResponseEntity.ok(new UserResponse(auth.getName()));
     }
-
-    public record LoginRequest(
-            @NotBlank String username,
-            @NotBlank String password
-    ) {}
-
-    public record LoginResponse(
-            String message,
-            String username,
-            String sessionId
-    ) {}
-
-    public record UserInfo(String username) {}
 }

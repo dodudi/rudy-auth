@@ -91,12 +91,13 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/users").permitAll()  // 회원가입
+                        .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                         .requestMatchers("/.well-known/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .formLogin(AbstractHttpConfigurer::disable);  // 서버 렌더링 로그인 페이지 비활성화
+                .formLogin(AbstractHttpConfigurer::disable);
 
         return http.build();
     }
@@ -110,10 +111,7 @@ public class SecurityConfig {
         config.setAllowedOrigins(List.of(
                 "http://localhost:5173",
                 "https://rudy.it.kr",
-                "http://rudy.it.kr:5173",
-                "https://auth.rudy.it.kr",
-                "https://api.rudy.it.kr",
-                "http://localhost:63342"
+                "http://rudy.it.kr:5173"
         ));
 
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
@@ -159,7 +157,6 @@ public class SecurityConfig {
                 .build();
 
         clientRepository.save(reactClient);
-
         return clientRepository;
     }
 
@@ -173,9 +170,6 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 
-    /**
-     * JWT 서명용 RSA 키
-     */
     @Bean
     public JWKSource<SecurityContext> jwkSource() {
         KeyPair keyPair = generateRsaKey();
@@ -212,7 +206,7 @@ public class SecurityConfig {
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
         return AuthorizationServerSettings.builder()
-                .issuer("https://rudy.it.kr")
+                .issuer("https://auth.rudy.it.kr")
                 .build();
     }
 }
