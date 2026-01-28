@@ -33,3 +33,6 @@ session:
     domain: ${SESSION_COOKIE_DOMAIN:rudy.it.kr}
     same-site: ${SESSION_COOKIE_SAME_SITE:None}
     secure: ${SESSION_COOKIE_SECURE:true}
+
+oauth2:
+  issuer-uri: ${OAUTH2_ISSUER_URI}
