@@ -30,6 +30,6 @@ spring:
 
 session:
   cookie:
-    domain: rudy.it.kr
-    same-site: None
-    secure: true
+    domain: ${SESSION_COOKIE_DOMAIN:rudy.it.kr}
+    same-site: ${SESSION_COOKIE_SAME_SITE:None}
+    secure: ${SESSION_COOKIE_SECURE:true}
